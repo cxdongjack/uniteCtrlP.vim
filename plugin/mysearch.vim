@@ -24,21 +24,15 @@ endfunction
 function! MySearchFinder()
     let buffername = unite#helper#get_buffer_directory(bufnr('%'))
     execute 'cd '.FindMyDirectory(buffername)
-    execute 'Unite -start-insert buffer file_rec'
+    execute 'Unite -start-insert buffer file_rec bookmark'
 endfunction    
 com! -nargs=0 MySearchFinder call MySearchFinder()
 
 " Unite
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-
-" Custom mappings for the unite buffer
-autocmd FileType unite call s:unite_settings()
-function! s:unite_settings()
-  " Enable navigation with control-j and control-k in insert mode
-  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-  imap <buffer> <C-c>   <Plug>(unite_exit)
-endfunction
+" 模糊匹配
+" call unite#filters#matcher_default#use(['matcher_fuzzy'])
+" 模糊匹配排序
+" call unite#filters#sorter_default#use(['sorter_rank'])
 
 " Like ctrlp.vim settings.
 call unite#custom#profile('default', 'context', {
@@ -46,6 +40,18 @@ call unite#custom#profile('default', 'context', {
 \   'winheight': 10,
 \   'direction': 'botright',
 \ })
+
+call unite#custom#source('file_rec,file_rec/async', 'ignore_globs', split(&wildignore, ','))
+
+" Custom mappings for the unite buffer
+autocmd FileType unite call s:unite_settings()
+function! s:unite_settings()
+  " Enable navigation with control-j and control-k in insert mode
+  "imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+  "imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+  "imap <buffer> <C-c>   <Plug>(unite_exit)
+endfunction
+
 
 " config example
 " nnoremap <leader>u :<C-u>Unite<CR>
