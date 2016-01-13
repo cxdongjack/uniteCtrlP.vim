@@ -1,5 +1,11 @@
+" Loading Guard {{{1
+if exists('g:viper__goanything')
+    finish
+endif
+let g:viper__goanything = 1
+
 ":nmap <C-V> :w<CR>:so %<CR>:MySearchFinder<CR>
-function! s:FindMyDirectory(path)
+function! FindGitRoot(path)
   let parent = unite#util#path2directory(a:path)
   let base = parent
 
@@ -19,11 +25,11 @@ function! s:FindMyDirectory(path)
 endfunction
 
 "test
-"echo FindMyDirectory('~/a.html')
+"echo FindGitRoot('~/a.html')
 
 function! MySearchFinder()
     let buffername = unite#helper#get_buffer_directory(bufnr('%'))
-    let gitpath = s:FindMyDirectory(buffername)
+    let gitpath = FindGitRoot(buffername)
     execute 'cd '.gitpath
     execute 'Unite -start-insert buffer file_rec bookmark'
 endfunction    

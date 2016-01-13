@@ -1,23 +1,11 @@
-function! FindMyDirectory(path)
-  let parent = unite#util#path2directory(a:path)
-  let base = parent
-
-  while 1
-    let path = parent . '/.git'
-    " only check .git as directory to avoid submodules
-    if isdirectory(path)
-      return parent
-    endif
-    let next = fnamemodify(parent, ':h')
-    if next == parent
-      return base
-    endif
-    let parent = next
-  endwhile
-endfunction
+" Loading Guard {{{1
+if exists('g:viper__tmux')
+    finish
+endif
+let g:viper__tmux = 1
 
 function! VimuxGoToRoot()
-  call VimuxRunCommand("cd " . FindMyDirectory(bufname("%")))
+  call VimuxRunCommand("cd " . FindGitRoot(bufname("%")))
   call _VimuxTmux("select-"._VimuxRunnerType()." -t ".g:VimuxRunnerIndex)
 endfunction
 
