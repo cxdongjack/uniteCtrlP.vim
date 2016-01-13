@@ -1,5 +1,5 @@
 ":nmap <C-V> :w<CR>:so %<CR>:MySearchFinder<CR>
-function! FindMyDirectory(path)
+function! s:FindMyDirectory(path)
   let parent = unite#util#path2directory(a:path)
   let base = parent
 
@@ -23,7 +23,8 @@ endfunction
 
 function! MySearchFinder()
     let buffername = unite#helper#get_buffer_directory(bufnr('%'))
-    execute 'cd '.FindMyDirectory(buffername)
+    let gitpath = s:FindMyDirectory(buffername)
+    execute 'cd '.gitpath
     execute 'Unite -start-insert buffer file_rec bookmark'
 endfunction    
 com! -nargs=0 MySearchFinder call MySearchFinder()
