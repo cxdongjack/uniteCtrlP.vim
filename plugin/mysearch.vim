@@ -10,7 +10,6 @@ function! FindGitRoot(path)
   let base = parent
 
   while 1
-    echo parent
     let path = parent . '/.git'
     " only check .git as directory to avoid submodules
     if isdirectory(path)
